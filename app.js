@@ -32,6 +32,7 @@ const letterFrom = document.querySelector("#letterFrom");
 const finale = document.querySelector("#finale");
 const replayButton = document.querySelector("#replayButton");
 const danmakuLayer = document.querySelector("#danmakuLayer");
+const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
 let audioContext;
 let musicTimer;
@@ -135,14 +136,41 @@ function playMusicPhrase() {
 }
 
 function startMusic() {
-	audioContext ??= new AudioContext();
-	audioContext.resume();
+	if (!AudioContextClass) {
+		musicButton.classList.add("muted");
+		musicButton.setAttribute("aria-label", "当前浏览器不支持背景音乐");
+		musicButton.title = "当前浏览器不支持背景音乐";
+		return;
+	}
+
+	audioContext ??= new AudioContextClass();
 	musicPlaying = true;
 	musicButton.classList.remove("muted");
 	musicButton.setAttribute("aria-label", "关闭背景音乐");
 	musicButton.title = "关闭背景音乐";
-	playMusicPhrase();
-	musicTimer = window.setInterval(playMusicPhrase, 12000);
+
+	const beginPlayback = () => {
+		if (!musicPlaying) return;
+		window.clearInterval(musicTimer);
+		playMusicPhrase();
+		musicTimer = window.setInterval(playMusicPhrase, 12000);
+	};
+
+	if (audioContext.state === "running") {
+		beginPlayback();
+		return;
+	}
+
+	const unlockSource = audioContext.createBufferSource();
+	unlockSource.buffer = audioContext.createBuffer(1, 1, 22050);
+	unlockSource.connect(audioContext.destination);
+	unlockSource.start(0);
+	audioContext.resume().then(beginPlayback).catch(() => {
+		musicPlaying = false;
+		musicButton.classList.add("muted");
+		musicButton.setAttribute("aria-label", "播放背景音乐");
+		musicButton.title = "点击播放背景音乐";
+	});
 }
 
 function stopMusic() {
