@@ -23,7 +23,7 @@ body {
   overflow-x: hidden;
   color: var(--ink);
   background-color: var(--paper);
-  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-family: "Trebuchet MS", Verdana, sans-serif;
 }
 
 button {
@@ -105,7 +105,7 @@ button:focus-visible {
 .intro h1 {
   max-width: 640px;
   margin: 0;
-  font: 800 clamp(40px, 12vw, 74px)/1.15 Georgia, "Microsoft YaHei", serif;
+  font: 800 clamp(38px, 11vw, 70px)/1.08 Georgia, serif;
 }
 
 .intro-copy {
@@ -258,7 +258,7 @@ button:focus-visible {
   max-width: 320px;
   min-height: 58px;
   margin: 0 0 28px;
-  font: 700 24px/1.35 Georgia, "Microsoft YaHei", serif;
+  font: 700 24px/1.35 Georgia, serif;
 }
 
 .envelope {
@@ -449,7 +449,7 @@ button:focus-visible {
 
 .letter-card h2 {
   margin: 0 0 22px;
-  font: 700 25px/1.3 Georgia, "Microsoft YaHei", serif;
+  font: 700 25px/1.3 Georgia, serif;
 }
 
 .letter-message {
@@ -479,12 +479,14 @@ button:focus-visible {
   z-index: 20;
   display: grid;
   padding: 24px;
+  overflow-y: auto;
   background: var(--paper);
   place-items: center;
 }
 
 .finale-content {
-  max-width: 520px;
+  width: min(100%, 760px);
+  padding: 24px 0;
   text-align: center;
   animation: rise 0.7s ease both;
 }
@@ -492,12 +494,33 @@ button:focus-visible {
 .finale-content h2 {
   margin: 14px 0 18px;
   color: var(--coral);
-  font: 800 clamp(40px, 12vw, 68px)/1.15 Georgia, "Microsoft YaHei", serif;
+  font: 800 clamp(38px, 10vw, 64px)/1.08 Georgia, serif;
 }
 
 .finale-content > p:not(.eyebrow) {
-  margin-bottom: 32px;
+  max-width: 560px;
+  margin: 0 auto 24px;
   line-height: 1.8;
+}
+
+.group-photo {
+  margin: 0 auto 26px;
+}
+
+.group-photo img {
+  display: block;
+  width: 100%;
+  height: clamp(210px, 42vw, 360px);
+  border: 8px solid var(--white);
+  object-fit: cover;
+  object-position: center 72%;
+  box-shadow: var(--shadow);
+}
+
+.group-photo figcaption {
+  margin-top: 10px;
+  color: #71665d;
+  font: italic 14px/1.4 Georgia, serif;
 }
 
 .replay-button {

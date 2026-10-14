@@ -1,18 +1,17 @@
-// 后续只需要替换这里的署名和祝福内容，页面其他部分无需修改。
 const birthdayCard = {
-	from: "所有惦记你的我们",
-	message: "Morgan，生日快乐！\n\n这一张小小的电子卡，装着大家共同的心意：愿你新的一岁平安、健康、自由、快乐，认真生活，也尽情大笑。\n\n愿工作顺利，好运持续加载；想吃的都不排队，想做的都有回应，偶尔偷个懒也不会被发现。愿每一个普通日子，都藏着让你嘴角上扬的小惊喜。"
+	from: "All of us who are lucky to know you",
+	message: "Happy Birthday, Morgan!\n\nThis little card carries one big wish from all of us: may your new year be filled with good health, freedom, joy, and plenty of laughter.\n\nMay work go smoothly, good luck keep finding you, your favorite food never come with a queue, and every ordinary day hold a small surprise that makes you smile."
 };
 
 const danmakuMessages = [
-	"Morgan 生日快乐！",
-	"今天可以多吃一块蛋糕",
-	"好运正在派送中",
-	"新的一岁继续闪闪发光",
-	"笑口常开，烦恼拜拜",
-	"愿望统统实现",
-	"今天你最大",
-	"快乐不止今天"
+	"Happy Birthday, Morgan!",
+	"One more slice of cake!",
+	"Good luck is on its way",
+	"Keep shining this year",
+	"More smiles, fewer worries",
+	"May every wish come true",
+	"Today is all about you",
+	"Joy, today and always"
 ];
 
 const intro = document.querySelector("#intro");
@@ -39,8 +38,8 @@ let musicPlaying = false;
 let isOpening = false;
 
 function updateEnvelope() {
-	mailCount.textContent = "一封来自大家的生日贺卡";
-	envelopeSender.textContent = `来自：${birthdayCard.from}`;
+	mailCount.textContent = "A birthday card from all of us";
+	envelopeSender.textContent = `FROM: ${birthdayCard.from}`;
 	progressBar.style.width = "0%";
 }
 
@@ -48,7 +47,7 @@ function showLetter() {
 	letterNumber.textContent = "BIRTHDAY CARD";
 	letterMessage.textContent = birthdayCard.message;
 	letterFrom.textContent = `—— ${birthdayCard.from}`;
-	nextButton.firstChild.textContent = "收下大家的祝福 ";
+	nextButton.firstChild.textContent = "Take these wishes with you ";
 	dialog.showModal();
 	isOpening = false;
 }
@@ -104,13 +103,13 @@ function startMusic() {
 	birthdayMusic.play().then(() => {
 		musicPlaying = true;
 		musicButton.classList.remove("muted");
-		musicButton.setAttribute("aria-label", "关闭背景音乐");
-		musicButton.title = "关闭背景音乐";
+		musicButton.setAttribute("aria-label", "Pause background music");
+		musicButton.title = "Pause background music";
 	}).catch(() => {
 		musicPlaying = false;
 		musicButton.classList.add("muted");
-		musicButton.setAttribute("aria-label", "播放背景音乐");
-		musicButton.title = "点击播放背景音乐";
+		musicButton.setAttribute("aria-label", "Play background music");
+		musicButton.title = "Play background music";
 	});
 }
 
@@ -118,8 +117,8 @@ function stopMusic() {
 	musicPlaying = false;
 	birthdayMusic.pause();
 	musicButton.classList.add("muted");
-	musicButton.setAttribute("aria-label", "播放背景音乐");
-	musicButton.title = "播放背景音乐";
+	musicButton.setAttribute("aria-label", "Play background music");
+	musicButton.title = "Play background music";
 }
 
 function toggleMusic() {
