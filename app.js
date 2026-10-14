@@ -1,16 +1,8 @@
-// 后续只需要替换这里的姓名和祝福内容，页面其他部分无需修改。
-const wishes = [
-	{ from: "快乐搭子", message: "生日快乐！愿你新的一岁，烦恼自动退散，好运持续加载，每天都有值得大笑的小事。" },
-	{ from: "饭搭子", message: "祝你生日快乐！愿你吃喜欢的东西不排队，点的外卖永远提前到，体重秤也学会适时沉默。" },
-	{ from: "办公室邻居", message: "愿新的一岁工作顺利、灵感不断，下班准时，周末加倍漫长。最重要的是，每天都开心！" },
-	{ from: "老朋友", message: "认识你真好。愿往后的日子里，我们还能一起制造很多笑到停不下来的回忆。生日快乐！" },
-	{ from: "神秘朋友 A", message: "愿你眼里有光，心里有爱，银行卡里有余额，手机电量永远保持在 80% 以上。" },
-	{ from: "神秘朋友 B", message: "今天你最大！蛋糕第一块归你，愿望可以多许几个，快乐也必须超级加倍。" },
-	{ from: "靠谱队友", message: "愿你的认真都有收获，努力都有回应。累的时候就歇一歇，我们一直都在。" },
-	{ from: "气氛组代表", message: "祝 Morgan 生日快乐！愿你永远年轻，永远热烈，永远能在平凡日子里找到彩蛋。" },
-	{ from: "多年好友", message: "时间会往前走，但真诚的友谊不会过期。愿每一岁的你，都比上一岁更自在。" },
-	{ from: "所有惦记你的人", message: "最后一封，装着大家共同的愿望：愿你平安、健康、自由、快乐。Morgan，生日快乐！" }
-];
+// 后续只需要替换这里的署名和祝福内容，页面其他部分无需修改。
+const birthdayCard = {
+	from: "所有惦记你的我们",
+	message: "Morgan，生日快乐！\n\n这一张小小的电子卡，装着大家共同的心意：愿你新的一岁平安、健康、自由、快乐，认真生活，也尽情大笑。\n\n愿工作顺利，好运持续加载；想吃的都不排队，想做的都有回应，偶尔偷个懒也不会被发现。愿每一个普通日子，都藏着让你嘴角上扬的小惊喜。"
+};
 
 const danmakuMessages = [
 	"Morgan 生日快乐！",
@@ -41,7 +33,6 @@ const finale = document.querySelector("#finale");
 const replayButton = document.querySelector("#replayButton");
 const danmakuLayer = document.querySelector("#danmakuLayer");
 
-let currentIndex = 0;
 let audioContext;
 let musicTimer;
 let danmakuTimer;
@@ -49,20 +40,16 @@ let musicPlaying = false;
 let isOpening = false;
 
 function updateEnvelope() {
-	const wish = wishes[currentIndex];
-	mailCount.textContent = `第 ${currentIndex + 1} 封 / 共 ${wishes.length} 封`;
-	envelopeSender.textContent = `来自：${wish.from}`;
-	progressBar.style.width = `${(currentIndex / wishes.length) * 100}%`;
+	mailCount.textContent = "一封来自大家的生日贺卡";
+	envelopeSender.textContent = `来自：${birthdayCard.from}`;
+	progressBar.style.width = "0%";
 }
 
 function showLetter() {
-	const wish = wishes[currentIndex];
-	letterNumber.textContent = `LETTER ${String(currentIndex + 1).padStart(2, "0")}`;
-	letterMessage.textContent = wish.message;
-	letterFrom.textContent = `—— ${wish.from}`;
-	nextButton.firstChild.textContent = currentIndex === wishes.length - 1
-		? "收好最后一封 "
-		: "收好这封，继续拆下一封 ";
+	letterNumber.textContent = "BIRTHDAY CARD";
+	letterMessage.textContent = birthdayCard.message;
+	letterFrom.textContent = `—— ${birthdayCard.from}`;
+	nextButton.firstChild.textContent = "收下大家的祝福 ";
 	dialog.showModal();
 	isOpening = false;
 }
@@ -81,17 +68,12 @@ function closeLetter() {
 
 function advanceLetter() {
 	closeLetter();
-	if (currentIndex === wishes.length - 1) {
-		envelope.disabled = true;
-		progressBar.style.width = "100%";
-		window.setTimeout(() => {
-			finale.hidden = false;
-			burstDanmaku();
-		}, 260);
-		return;
-	}
-	currentIndex += 1;
-	updateEnvelope();
+	envelope.disabled = true;
+	progressBar.style.width = "100%";
+	window.setTimeout(() => {
+		finale.hidden = false;
+		burstDanmaku();
+	}, 260);
 }
 
 function spawnDanmaku(text, forceTop) {
@@ -172,7 +154,6 @@ function startExperience() {
 }
 
 function replay() {
-	currentIndex = 0;
 	finale.hidden = true;
 	envelope.disabled = false;
 	updateEnvelope();
