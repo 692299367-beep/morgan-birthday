@@ -108,7 +108,7 @@ function playNote(frequency, startTime, duration) {
 	oscillator.type = "sine";
 	oscillator.frequency.value = frequency;
 	gain.gain.setValueAtTime(0.0001, startTime);
-	gain.gain.exponentialRampToValueAtTime(0.07, startTime + 0.03);
+	gain.gain.exponentialRampToValueAtTime(0.16, startTime + 0.03);
 	gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 	oscillator.connect(gain).connect(audioContext.destination);
 	activeOscillators.add(oscillator);
