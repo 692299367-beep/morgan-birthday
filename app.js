@@ -32,12 +32,9 @@ const letterFrom = document.querySelector("#letterFrom");
 const finale = document.querySelector("#finale");
 const replayButton = document.querySelector("#replayButton");
 const danmakuLayer = document.querySelector("#danmakuLayer");
-const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+const birthdayMusic = document.querySelector("#birthdayMusic");
 
-let audioContext;
-let musicTimer;
 let danmakuTimer;
-const activeOscillators = new Set();
 let musicPlaying = false;
 let isOpening = false;
 
@@ -103,69 +100,13 @@ function burstDanmaku() {
 	});
 }
 
-function playNote(frequency, startTime, duration) {
-	const oscillator = audioContext.createOscillator();
-	const gain = audioContext.createGain();
-	oscillator.type = "sine";
-	oscillator.frequency.value = frequency;
-	gain.gain.setValueAtTime(0.0001, startTime);
-	gain.gain.exponentialRampToValueAtTime(0.16, startTime + 0.03);
-	gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-	oscillator.connect(gain).connect(audioContext.destination);
-	activeOscillators.add(oscillator);
-	oscillator.addEventListener("ended", () => activeOscillators.delete(oscillator));
-	oscillator.start(startTime);
-	oscillator.stop(startTime + duration + 0.05);
-}
-
-function playMusicPhrase() {
-	if (!musicPlaying || !audioContext) return;
-	const beat = 0.34;
-	const melody = [
-		[392, 0.75], [392, 0.25], [440, 1], [392, 1], [523.25, 1], [493.88, 2],
-		[392, 0.75], [392, 0.25], [440, 1], [392, 1], [587.33, 1], [523.25, 2],
-		[392, 0.75], [392, 0.25], [783.99, 1], [659.25, 1], [523.25, 1], [493.88, 1], [440, 2],
-		[698.46, 0.75], [698.46, 0.25], [659.25, 1], [523.25, 1], [587.33, 1], [523.25, 2]
-	];
-	const start = audioContext.currentTime + 0.05;
-	let offset = 0;
-	melody.forEach(([frequency, beats]) => {
-		playNote(frequency, start + offset, beats * beat * 0.88);
-		offset += beats * beat;
-	});
-}
-
 function startMusic() {
-	if (!AudioContextClass) {
-		musicButton.classList.add("muted");
-		musicButton.setAttribute("aria-label", "当前浏览器不支持背景音乐");
-		musicButton.title = "当前浏览器不支持背景音乐";
-		return;
-	}
-
-	audioContext ??= new AudioContextClass();
-	musicPlaying = true;
-	musicButton.classList.remove("muted");
-	musicButton.setAttribute("aria-label", "关闭背景音乐");
-	musicButton.title = "关闭背景音乐";
-
-	const beginPlayback = () => {
-		if (!musicPlaying) return;
-		window.clearInterval(musicTimer);
-		playMusicPhrase();
-		musicTimer = window.setInterval(playMusicPhrase, 12000);
-	};
-
-	if (audioContext.state === "running") {
-		beginPlayback();
-		return;
-	}
-
-	const unlockSource = audioContext.createBufferSource();
-	unlockSource.buffer = audioContext.createBuffer(1, 1, 22050);
-	unlockSource.connect(audioContext.destination);
-	unlockSource.start(0);
-	audioContext.resume().then(beginPlayback).catch(() => {
+	birthdayMusic.play().then(() => {
+		musicPlaying = true;
+		musicButton.classList.remove("muted");
+		musicButton.setAttribute("aria-label", "关闭背景音乐");
+		musicButton.title = "关闭背景音乐";
+	}).catch(() => {
 		musicPlaying = false;
 		musicButton.classList.add("muted");
 		musicButton.setAttribute("aria-label", "播放背景音乐");
@@ -175,14 +116,7 @@ function startMusic() {
 
 function stopMusic() {
 	musicPlaying = false;
-	window.clearInterval(musicTimer);
-	activeOscillators.forEach((oscillator) => {
-		try {
-			oscillator.stop();
-		} catch {
-			activeOscillators.delete(oscillator);
-		}
-	});
+	birthdayMusic.pause();
 	musicButton.classList.add("muted");
 	musicButton.setAttribute("aria-label", "播放背景音乐");
 	musicButton.title = "播放背景音乐";
@@ -219,6 +153,5 @@ dialog.addEventListener("click", (event) => {
 });
 
 window.addEventListener("beforeunload", () => {
-	window.clearInterval(musicTimer);
 	window.clearInterval(danmakuTimer);
 });
