@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ee">
+  <title>Morgan 的生日惊喜</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="paper-texture" aria-hidden="true"></div>
+
+  <section class="intro" id="intro" aria-labelledby="intro-title">
+    <div class="intro-date">10 · 18</div>
+    <p class="eyebrow">一份限时送达的生日心意</p>
+    <h1 id="intro-title">Morgan，<br>有人给你寄了十封信</h1>
+    <p class="intro-copy">建议把声音打开，然后慢慢拆。</p>
+    <button class="start-button" id="startButton" type="button">
+      <span>开启惊喜</span>
+      <span aria-hidden="true">→</span>
+    </button>
+    <div class="intro-stamp" aria-hidden="true">HAPPY<br>BIRTHDAY</div>
+  </section>
+
+  <main class="celebration" id="celebration" hidden>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Morgan's birthday mail</p>
+        <p class="date-label">10 月 18 日</p>
+      </div>
+      <button class="icon-button" id="musicButton" type="button" aria-label="关闭背景音乐" title="关闭背景音乐">♪</button>
+    </header>
+
+    <div class="danmaku-layer" id="danmakuLayer" aria-hidden="true"></div>
+
+    <section class="portrait-area" aria-label="寿星照片">
+      <!-- 收到照片后，为下方图片添加 src="照片文件名"，并移除 hidden 属性。 -->
+      <img id="portrait" alt="Morgan 的照片" hidden>
+      <div class="portrait-placeholder" id="portraitPlaceholder">
+        <span class="placeholder-initial">M</span>
+        <span class="placeholder-note">PHOTO<br>COMING SOON</span>
+      </div>
+      <div class="portrait-tape" aria-hidden="true"></div>
+    </section>
+
+    <section class="mail-stage" aria-labelledby="mail-title">
+      <p class="mail-count" id="mailCount">第 1 封 / 共 10 封</p>
+      <h2 id="mail-title">今天的第一份心意，等你签收</h2>
+
+      <button class="envelope" id="envelope" type="button" aria-label="拆开当前祝福信">
+        <span class="envelope-back"></span>
+        <span class="envelope-letter">
+          <span>TO: MORGAN</span>
+          <strong id="envelopeSender">来自：快乐搭子</strong>
+        </span>
+        <span class="envelope-front"></span>
+        <span class="envelope-flap"></span>
+        <span class="seal" aria-hidden="true">M</span>
+      </button>
+
+      <p class="tap-hint">点击信封拆开</p>
+      <div class="progress" aria-label="拆信进度">
+        <span id="progressBar"></span>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="letter-dialog" id="letterDialog">
+    <article class="letter-card">
+      <button class="close-button" id="closeButton" type="button" aria-label="关闭信件" title="关闭">×</button>
+      <p class="letter-number" id="letterNumber">LETTER 01</p>
+      <h2 id="letterGreeting">亲爱的 Morgan：</h2>
+      <p class="letter-message" id="letterMessage"></p>
+      <p class="letter-from" id="letterFrom"></p>
+      <button class="next-button" id="nextButton" type="button">收好这封，继续拆下一封 <span aria-hidden="true">→</span></button>
+    </article>
+  </dialog>
+
+  <div class="finale" id="finale" hidden>
+    <div class="finale-content">
+      <p class="eyebrow">十封心意，全部送达</p>
+      <h2>Morgan，生日快乐！</h2>
+      <p>愿你的新一岁，认真生活，也尽情快乐。</p>
+      <button class="replay-button" id="replayButton" type="button">再看一次</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
