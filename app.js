@@ -36,6 +36,7 @@ const danmakuLayer = document.querySelector("#danmakuLayer");
 let audioContext;
 let musicTimer;
 let danmakuTimer;
+const activeOscillators = new Set();
 let musicPlaying = false;
 let isOpening = false;
 
@@ -110,15 +111,27 @@ function playNote(frequency, startTime, duration) {
 	gain.gain.exponentialRampToValueAtTime(0.07, startTime + 0.03);
 	gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 	oscillator.connect(gain).connect(audioContext.destination);
+	activeOscillators.add(oscillator);
+	oscillator.addEventListener("ended", () => activeOscillators.delete(oscillator));
 	oscillator.start(startTime);
 	oscillator.stop(startTime + duration + 0.05);
 }
 
 function playMusicPhrase() {
 	if (!musicPlaying || !audioContext) return;
-	const notes = [261.63, 329.63, 392, 523.25, 392, 329.63, 293.66, 392];
+	const beat = 0.34;
+	const melody = [
+		[392, 0.75], [392, 0.25], [440, 1], [392, 1], [523.25, 1], [493.88, 2],
+		[392, 0.75], [392, 0.25], [440, 1], [392, 1], [587.33, 1], [523.25, 2],
+		[392, 0.75], [392, 0.25], [783.99, 1], [659.25, 1], [523.25, 1], [493.88, 1], [440, 2],
+		[698.46, 0.75], [698.46, 0.25], [659.25, 1], [523.25, 1], [587.33, 1], [523.25, 2]
+	];
 	const start = audioContext.currentTime + 0.05;
-	notes.forEach((note, index) => playNote(note, start + index * 0.32, 0.28));
+	let offset = 0;
+	melody.forEach(([frequency, beats]) => {
+		playNote(frequency, start + offset, beats * beat * 0.88);
+		offset += beats * beat;
+	});
 }
 
 function startMusic() {
@@ -129,12 +142,19 @@ function startMusic() {
 	musicButton.setAttribute("aria-label", "关闭背景音乐");
 	musicButton.title = "关闭背景音乐";
 	playMusicPhrase();
-	musicTimer = window.setInterval(playMusicPhrase, 3000);
+	musicTimer = window.setInterval(playMusicPhrase, 12000);
 }
 
 function stopMusic() {
 	musicPlaying = false;
 	window.clearInterval(musicTimer);
+	activeOscillators.forEach((oscillator) => {
+		try {
+			oscillator.stop();
+		} catch {
+			activeOscillators.delete(oscillator);
+		}
+	});
 	musicButton.classList.add("muted");
 	musicButton.setAttribute("aria-label", "播放背景音乐");
 	musicButton.title = "播放背景音乐";
