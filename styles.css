@@ -203,6 +203,10 @@ button:focus-visible {
   object-fit: cover;
 }
 
+.portrait-area img {
+  object-position: center top;
+}
+
 .portrait-placeholder {
   position: relative;
   display: grid;
